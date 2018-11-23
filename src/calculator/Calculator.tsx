@@ -3,14 +3,7 @@ import React, { Component, ReactNode } from "react";
 import { CalculatorButton } from './CalculatorButton';
 import { CALCULATOR_CONTENT } from "./Calculator.constants";
 import { assignValue } from "./Calculator.service";
-
-interface CalculatorState {
-    expense: {
-        value: string,
-        note: string
-    },
-    totalExpense: number
-}
+import { CalculatorState } from "../interfaces/calculator.state";
 
 export class Calculator extends Component<{}, CalculatorState> {
     calculatorContent: string[] = CALCULATOR_CONTENT;
@@ -71,7 +64,11 @@ export class Calculator extends Component<{}, CalculatorState> {
                 <div className="numbers-area margin-horizontal-auto">
                     {this.createButtons()}
                 </div>
-                <div onClick={() => this.onAdd(expense)}>Add</div>
+                <div
+                    className="add-area display-flex"
+                    onClick={() => this.onAdd(expense)}>
+                    Add
+                </div>
             </div>
         )
     }

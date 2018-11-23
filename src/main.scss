@@ -19,13 +19,14 @@ body {
 
 // main layout
 .main-layout {
-    height: 100vh;
+    height: 100vh - $_space_base * 6 + px;
     display: grid;
-    grid-template-rows: $_space_base * 6 + px 3fr 1fr;
+    grid-template-rows: 3fr 1fr;
     grid-template-columns: auto;
 }
 
 .nav-bar {
+    height: $_space_base * 6 + px;
     background-color: #03A596;
 }
 .calculator-content {
