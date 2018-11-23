@@ -17,6 +17,32 @@ body {
     color: #03A596;
 }
 
+// main layout
+.main-layout {
+    height: 100vh;
+    display: grid;
+    grid-template-rows: $_space_base * 6 + px 3fr 1fr;
+    grid-template-columns: auto;
+}
+
+.nav-bar {
+    background-color: #03A596;
+}
+.calculator-content {
+    justify-content: center;
+}
+// end of main layout
+
+// add area
+.add-area {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+// end of add area
+
+
+
 // number-area component
 .numbers-area {
     border: 1px solid $_aguamarina_color;
