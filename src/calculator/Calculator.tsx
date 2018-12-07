@@ -1,46 +1,56 @@
 import React, { Component, ReactNode } from "react";
+import { connect } from 'react-redux';
 
 import { CalculatorButton } from './CalculatorButton';
 import { CALCULATOR_CONTENT } from "./Calculator.constants";
 import { assignValue } from "./Calculator.service";
 import { CalculatorState } from "../interfaces/calculator.state";
+import { updateExpense, addExpense } from '../actions/expense.actions';
+import { ExpenseInterface } from "../interfaces/expense.interface";
 
-export class Calculator extends Component<{}, CalculatorState> {
+class Calculator extends Component<CalculatorState> {
     calculatorContent: string[] = CALCULATOR_CONTENT;
 
-    constructor(props: {}) {
-        super(props);
-        this.state = {
-            expense: {
-                value: '',
-                note: ''
-            },
-            totalExpense: 0
-        };
+    // this is not neeeded.
+    // if you are using redux you should keep your state in the store
+    // generally local state is not needed.
+
+    // constructor(props: {}) {
+    //     super(props);
+    //     this.state = {
+    //         expense: {
+    //             value: '',
+    //             note: ''
+    //         },
+    //         totalExpense: 0
+    //     };
+    // }
+
+    handleBtnPressed = ( value: string ) => {
+        this.props.updateExpense(Number(value))
+
+        // removing call to calculation servicex
+        // components should be dumb as possible
+        // rather handle data minipulation/ stater maintenance in reducer
+    
+        // let value = assignValue(this.state.expense.value, content);
+        // const expense = {
+        //     value,
+        //     note: ''
+        // }
+        // this.setState({
+        //     expense
+        // })
     }
 
-    handleBtnPressed = (content = '') => {
-        let value = assignValue(this.state.expense.value, content);
-        const expense = {
+    onAdd = (value: number) => {
+        const expense: ExpenseInterface = {
+            note: 'new',
             value,
-            note: ''
         }
-        this.setState({
-            expense
-        })
-    }
 
-    onAdd = (value: string) => {
-        let totalExpense = this.state.totalExpense;
-        const newValue = Number(value);
-        totalExpense = totalExpense + newValue;
-        this.setState ({
-            totalExpense,
-            expense: {
-                value: '',
-                note: ''
-            }
-        })
+        // update state by dipatching actions. no need for local state.
+        this.props.addExpense(expense);
     }
 
     createButtons = (): ReactNode => {
@@ -53,12 +63,12 @@ export class Calculator extends Component<{}, CalculatorState> {
     }
 
     render() {
-        const total = this.state.totalExpense;
-        const expense = this.state.expense.value;
+        const total = this.props.totalExpense;
+        const expense = this.props.expense.value;
         return  (
             <div>
                 <div>total: {total}</div>
-                { expense.length > 0 &&
+                { expense &&
                     <div>expense: {expense}</div>
                 }
                 <div className="numbers-area margin-horizontal-auto">
@@ -74,3 +84,20 @@ export class Calculator extends Component<{}, CalculatorState> {
     }
   
 }
+
+// this function when passed to react-reduc connect function receives app root state
+// select the values you need in your component and they will be accessible as props. 
+const mapStateToProps = (state: any) => ({
+    totalExpense: state.expense.totalExpense, 
+    expense: state.expense.expense,
+});
+
+// pass whatever actions your component needs here
+// the will be available as props
+const mapActionsToProps = {
+    updateExpense: updateExpense,
+    addExpense: addExpense
+}
+
+// any component that needs tzo access redux state needs to be connected 
+export default connect(mapStateToProps, mapActionsToProps)(Calculator);

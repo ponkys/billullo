@@ -1,5 +1,5 @@
 export interface ExpenseInterface {
-    value: string,
+    value: number,
     note: string,
     category?: string
 }
