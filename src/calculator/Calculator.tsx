@@ -11,7 +11,7 @@ import { ExpenseInterface } from "../interfaces/expense.interface";
 class Calculator extends Component<CalculatorState> {
     calculatorContent: string[] = CALCULATOR_CONTENT;
 
-    // this is not neeeded.
+    // this is not needed.
     // if you are using redux you should keep your state in the store
     // generally local state is not needed.
 
@@ -29,9 +29,9 @@ class Calculator extends Component<CalculatorState> {
     handleBtnPressed = ( value: string ) => {
         this.props.updateExpense(Number(value))
 
-        // removing call to calculation servicex
+        // removing call to calculation service
         // components should be dumb as possible
-        // rather handle data minipulation/ stater maintenance in reducer
+        // rather handle data manipulation/ stater maintenance in reducer
     
         // let value = assignValue(this.state.expense.value, content);
         // const expense = {
@@ -49,7 +49,7 @@ class Calculator extends Component<CalculatorState> {
             value,
         }
 
-        // update state by dipatching actions. no need for local state.
+        // update state by dispatching actions. no need for local state.
         this.props.addExpense(expense);
     }
 
@@ -85,7 +85,7 @@ class Calculator extends Component<CalculatorState> {
   
 }
 
-// this function when passed to react-reduc connect function receives app root state
+// this function when passed to react-redux connect function receives app root state
 // select the values you need in your component and they will be accessible as props. 
 const mapStateToProps = (state: any) => ({
     totalExpense: state.expense.totalExpense, 
@@ -99,5 +99,5 @@ const mapActionsToProps = {
     addExpense: addExpense
 }
 
-// any component that needs tzo access redux state needs to be connected 
+// any component that needs to access redux state needs to be connected 
 export default connect(mapStateToProps, mapActionsToProps)(Calculator);

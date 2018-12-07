@@ -10,7 +10,6 @@ import { Provider } from 'react-redux';
 import rootReducer from './reducers';
 
 const store = createStore(rootReducer);
-console.log(store.getState());
 
 class App extends Component {
     render() {
