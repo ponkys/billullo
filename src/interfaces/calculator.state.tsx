@@ -1,8 +1,10 @@
 import { ExpenseInterface } from "./expense.interface";
 
-export interface CalculatorState {
-    expense: ExpenseInterface,
-    totalExpense: number
-    updateExpense: any,
-    addExpense: any
+export interface CalculatorProps {
+    lastExpense: ExpenseInterface;
+    totalExpense: number;
+    addExpense: (expense: ExpenseInterface) => {
+        type: string;
+        payload: ExpenseInterface;
+    };
 }

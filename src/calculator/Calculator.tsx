@@ -4,43 +4,22 @@ import { connect } from 'react-redux';
 import { CalculatorButton } from './CalculatorButton';
 import { CALCULATOR_CONTENT } from "./Calculator.constants";
 import { assignValue } from "./Calculator.service";
-import { CalculatorState } from "../interfaces/calculator.state";
-import { updateExpense, addExpense } from '../actions/expense.actions';
+import { CalculatorProps } from "../interfaces/calculator.state";
+import { addExpense } from '../actions/expense.actions';
 import { ExpenseInterface } from "../interfaces/expense.interface";
 
-class Calculator extends Component<CalculatorState> {
+class Calculator extends Component<CalculatorProps, { currentExpense: string }> {
     calculatorContent: string[] = CALCULATOR_CONTENT;
+    state = {
+        currentExpense: ''
+    }
 
-    // this is not needed.
-    // if you are using redux you should keep your state in the store
-    // generally local state is not needed.
-
-    // constructor(props: {}) {
-    //     super(props);
-    //     this.state = {
-    //         expense: {
-    //             value: '',
-    //             note: ''
-    //         },
-    //         totalExpense: 0
-    //     };
-    // }
-
-    handleBtnPressed = ( value: string ) => {
-        this.props.updateExpense(Number(value))
-
-        // removing call to calculation service
-        // components should be dumb as possible
-        // rather handle data manipulation/ stater maintenance in reducer
-    
-        // let value = assignValue(this.state.expense.value, content);
-        // const expense = {
-        //     value,
-        //     note: ''
-        // }
-        // this.setState({
-        //     expense
-        // })
+    handleBtnPressed = (value: string) => {
+        const current = this.state.currentExpense;
+        const currentExpense = assignValue(current, value);
+        this.setState({
+            currentExpense
+        })
     }
 
     onAdd = (value: number) => {
@@ -48,7 +27,9 @@ class Calculator extends Component<CalculatorState> {
             note: 'new',
             value,
         }
-
+        this.setState({
+            currentExpense: ''
+        });
         // update state by dispatching actions. no need for local state.
         this.props.addExpense(expense);
     }
@@ -64,7 +45,7 @@ class Calculator extends Component<CalculatorState> {
 
     render() {
         const total = this.props.totalExpense;
-        const expense = this.props.expense.value;
+        const expense = this.state.currentExpense;
         return  (
             <div>
                 <div>total: {total}</div>
@@ -76,7 +57,7 @@ class Calculator extends Component<CalculatorState> {
                 </div>
                 <div
                     className="add-area display-flex"
-                    onClick={() => this.onAdd(expense)}>
+                    onClick={() => this.onAdd(Number.parseFloat(expense))}>
                     Add
                 </div>
             </div>
@@ -89,13 +70,12 @@ class Calculator extends Component<CalculatorState> {
 // select the values you need in your component and they will be accessible as props. 
 const mapStateToProps = (state: any) => ({
     totalExpense: state.expense.totalExpense, 
-    expense: state.expense.expense,
+    lastExpense: state.expense.lastExpense,
 });
 
 // pass whatever actions your component needs here
 // the will be available as props
 const mapActionsToProps = {
-    updateExpense: updateExpense,
     addExpense: addExpense
 }
 

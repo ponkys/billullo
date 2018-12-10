@@ -6,9 +6,6 @@ interface CalculatorButtonPropsInterface {
 }
 
 export class CalculatorButton extends Component<CalculatorButtonPropsInterface, {}> {
-    constructor(props: CalculatorButtonPropsInterface){
-        super(props); 
-    }
 
     onBtnClick = (content: string): any => {
         this.props.onBtnPressed(content);
